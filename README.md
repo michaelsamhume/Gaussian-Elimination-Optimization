@@ -1,3 +1,3 @@
-# Gaussian-Elimination-Asus-Tinkerboard-2
+# Gaussian-Elimination-Optimization
 
 This is my favorite project I've worked on so far!
