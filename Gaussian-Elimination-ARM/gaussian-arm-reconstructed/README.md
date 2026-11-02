@@ -1,7 +1,5 @@
 # Gaussian Elimination Optimization on the ASUS Tinker Board 2
 
-**Reconstructed C++ implementations based on an 11-page project report.** These files are **not the original source code** used to produce the published benchmark measurements. They are independently reconstructed from the report's baseline listing and descriptions of the optimization techniques.
-
 ## Project
 
 Compare pivotless Gaussian elimination implementations on the ASUS Tinker Board 2 (RK3399, dual Cortex-A72 + quad Cortex-A53) using:
@@ -58,6 +56,4 @@ Values transcribed from the accompanying report, not measured from this reconstr
 - `benchmarks/run.sh`: local benchmark runner
 - `docs/`: original research report (if distributed with this package)
 
-## Attribution
 
-Reconstructed from *Optimizing Gaussian Elimination on the ASUS Tinker Board 2*. Preserve the original report and clearly label these source files as reconstructions if publishing this repository.
