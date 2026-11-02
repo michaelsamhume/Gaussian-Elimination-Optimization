@@ -1,5 +1,5 @@
 #include "common.hpp"
-// Reconstructed transpose-based layout: columns of the original become contiguous rows.
+// transpose-based layout: columns of the original become contiguous rows.
 void eliminate(Matrix& A) {
     const int n=A.n;
     Matrix T(n);
