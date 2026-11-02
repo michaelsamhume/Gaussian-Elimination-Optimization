@@ -1,0 +1,6 @@
+version,256_ms,512_ms,1024_ms
+baseline,118,945,7760
+transposed,91,731,5810
+tiled,62,498,3822
+openmp,26,203,1441
+neon,19,154,1098
