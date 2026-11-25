@@ -37,9 +37,6 @@ Profiling used `perf`, `gprof`, and ARM Streamline.
 
 **Takeaway:** on this board, Gaussian elimination is memory-bound before it is compute-bound. Improving locality first made the later parallel and SIMD gains possible.
 
-## About the code
-
-The code in `src/` re-implements each variant as described in the report. The timings above are the original measurements from the study, not results from this code.
 
 ## Build and run
 
