@@ -10,7 +10,6 @@ Compare pivotless Gaussian elimination implementations on the ASUS Tinker Board 
 4. Tiling + OpenMP row-level parallelism
 5. Tiling + OpenMP + ARMv8 NEON two-double SIMD
 
-The baseline follows the report's listing. Optimized implementations are plausible reconstructions, **not verbatim reproductions**. In particular, transposition and blocking details are under-specified in the report, so these are representative designs and may perform differently from the reported results.
 
 ## Build and run
 
