@@ -6,11 +6,11 @@ The algorithm, the operation count, and the input matrices stay fixed. Only the 
 
 1. Baseline row-major implementation
 2. Transposed memory layout
-3. Cache tiling (32-wide blocks, sized for the 32 KB L1 cache)
+3. Cache tiling (32×32 tiles, sized for the 32 KB L1 cache)
 4. Tiling + OpenMP row-level parallelism across all six cores
 5. Tiling + OpenMP + NEON SIMD (two doubles per 128-bit register)
 
-Full write-up: [Optimizing Gaussian Elimination on the ASUS Tinker Board 2](Gaussian-Elimination-ARM/gaussian-elimination/docs/Gaussian-Elimination-Report.pdf)
+Full write-up: [Optimizing Gaussian Elimination on the ASUS Tinker Board 2](Gaussian-Elimination-ARM/gaussian-arm/docs/Gaussian-Elimination-Report.pdf)
 
 ## Results
 
@@ -37,11 +37,14 @@ Profiling used `perf`, `gprof`, and ARM Streamline.
 
 **Takeaway:** on this board, Gaussian elimination is memory-bound before it is compute-bound. Improving locality first made the later parallel and SIMD gains possible.
 
+## About the code
+
+The code in `src/` re-implements each variant as described in the report. The tiled, OpenMP, and NEON versions go further than the report's description of tiling: they also group pivot steps into panels of 32 and copy each 32×32 block of pivot rows into a contiguous buffer, so the block stays in L1 while it updates every remaining row. The timings above are the original measurements from the study, not results from this code.
 
 ## Build and run
 
 ```bash
-cd Gaussian-Elimination-ARM/gaussian-elimination
+cd Gaussian-Elimination-ARM/gaussian-arm
 make
 ./bin/baseline 512 10
 OMP_NUM_THREADS=6 ./bin/openmp 512 10
@@ -55,10 +58,12 @@ Requires GCC or Clang with OpenMP. On non-ARM machines, `neon` builds a scalar f
 
 - **No pivoting.** The study isolates performance rather than numerical stability, so this is not a general-purpose solver. Inputs are diagonally shifted to avoid tiny pivots, which reduces but does not eliminate the risk.
 - Timing covers elimination only. Matrix generation and copying are excluded; the transposed variant's transpose is included.
-- Tiling blocks the inner loop; it is not a fully blocked LU factorization.
-- Checksums catch large numerical differences but are not a full correctness test.
+- Tiling processes pivot steps and columns in 32×32 tiles. Unlike production LU libraries, it does not use matrix-multiply (BLAS-3) kernels.
+- All five versions produce bit-for-bit identical matrices, checked element by element at sizes from 1 to 1024 on x86-64 and on ARM64 with NEON, at several thread counts. The benchmark's checksum is only a quick sanity check.
 
 ## Files
+
+All project files are in `Gaussian-Elimination-ARM/gaussian-arm/`:
 
 - `src/common.hpp`: matrix type, input generation, and benchmark harness
 - `src/*.cpp`: one file per variant
